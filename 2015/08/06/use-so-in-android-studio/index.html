@@ -5,17 +5,17 @@
   
   <title>在Android Studio中使用so - Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="与Eclipse不同，Android Studio中使用so时需要手动添加依赖关系(至少截至到AS1.3版本时还是这样的)。比如在使用腾讯地图SDK时，我们需要将libtencentloc.so文件拷贝到app的libs目录下(你也可以拷贝到别处)，然后在app的build.gradle文件中添加代码：12345sourceSets &amp;#123;    main &amp;#123;        jni">
+  <meta name="description" content="这里有更全面的介绍与Eclipse不同，Android Studio中使用so时需要手动添加依赖关系(至少截至到AS1.3版本时还是这样的)。比如在使用腾讯地图SDK时，我们需要将libtencentloc.so文件拷贝到app的libs目录下(你也可以拷贝到别处)，然后在app的build.gradle文件中添加代码：12345sourceSets &amp;#123;    main &amp;#123;">
 <meta property="og:type" content="article">
 <meta property="og:title" content="在Android Studio中使用so">
 <meta property="og:url" content="http://yoursite.com/2015/08/06/use-so-in-android-studio/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="与Eclipse不同，Android Studio中使用so时需要手动添加依赖关系(至少截至到AS1.3版本时还是这样的)。比如在使用腾讯地图SDK时，我们需要将libtencentloc.so文件拷贝到app的libs目录下(你也可以拷贝到别处)，然后在app的build.gradle文件中添加代码：12345sourceSets &amp;#123;    main &amp;#123;        jni">
+<meta property="og:description" content="这里有更全面的介绍与Eclipse不同，Android Studio中使用so时需要手动添加依赖关系(至少截至到AS1.3版本时还是这样的)。比如在使用腾讯地图SDK时，我们需要将libtencentloc.so文件拷贝到app的libs目录下(你也可以拷贝到别处)，然后在app的build.gradle文件中添加代码：12345sourceSets &amp;#123;    main &amp;#123;">
 <meta property="og:image" content="http://yoursite.com/images/use-so-in-android-studio/1.png">
-<meta property="og:updated_time" content="2015-08-06T11:05:55.114Z">
+<meta property="og:updated_time" content="2015-08-10T10:28:59.435Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="在Android Studio中使用so">
-<meta name="twitter:description" content="与Eclipse不同，Android Studio中使用so时需要手动添加依赖关系(至少截至到AS1.3版本时还是这样的)。比如在使用腾讯地图SDK时，我们需要将libtencentloc.so文件拷贝到app的libs目录下(你也可以拷贝到别处)，然后在app的build.gradle文件中添加代码：12345sourceSets &amp;#123;    main &amp;#123;        jni">
+<meta name="twitter:description" content="这里有更全面的介绍与Eclipse不同，Android Studio中使用so时需要手动添加依赖关系(至少截至到AS1.3版本时还是这样的)。比如在使用腾讯地图SDK时，我们需要将libtencentloc.so文件拷贝到app的libs目录下(你也可以拷贝到别处)，然后在app的build.gradle文件中添加代码：12345sourceSets &amp;#123;    main &amp;#123;">
   
   
     <link rel="icon" href="/favicon.png">
@@ -77,7 +77,7 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <p>与Eclipse不同，Android Studio中使用so时需要手动添加依赖关系(至少截至到AS1.3版本时还是这样的)。<br>比如在使用腾讯地图SDK时，我们需要将libtencentloc.so文件拷贝到app的libs目录下(你也可以拷贝到别处)，然后在app的build.gradle文件中添加代码：<br><figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">sourceSets</span> &#123;</span><br><span class="line">    main &#123;</span><br><span class="line">        jniLibs.srcDirs = [<span class="string">'libs'</span>]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+        <p>这里有更全面的介绍<a href="http://www.jianshu.com/p/20cee429d1c3" target="_blank" rel="external"></a><br>与Eclipse不同，Android Studio中使用so时需要手动添加依赖关系(至少截至到AS1.3版本时还是这样的)。<br>比如在使用腾讯地图SDK时，我们需要将libtencentloc.so文件拷贝到app的libs目录下(你也可以拷贝到别处)，然后在app的build.gradle文件中添加代码：<br><figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">sourceSets</span> &#123;</span><br><span class="line">    main &#123;</span><br><span class="line">        jniLibs.srcDirs = [<span class="string">'libs'</span>]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <ul>
 <li>项目的结构和app模块的build.gradle文件看起来是这样的：<br><img src="/images/use-so-in-android-studio/1.png" alt=""></li>
 </ul>
