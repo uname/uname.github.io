@@ -3,17 +3,19 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Hexo</title>
+  <title>nodetcpproxy - Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://yoursite.com/index.html">
+  <meta name="description" content="nodetcpproxy 是在nodejs环境中运行的简易TCP转发服务器。需求背景：笔者在开发一款C/S架构的项目，C为Android移动客户端，S为Linux上C实现的服务器。没有带公网IP的云主机，只有一台安装了VMware的笔记本。VMware中安装了Ubuntu15.04。笔记本通过WiFi上网，因为XX原因，VMware的网络模式需要设置为NAT模式，因此Ubuntu中ifconfig">
+<meta property="og:type" content="article">
+<meta property="og:title" content="nodetcpproxy">
+<meta property="og:url" content="http://yoursite.com/2015/08/19/nodetcpproxy/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description">
+<meta property="og:description" content="nodetcpproxy 是在nodejs环境中运行的简易TCP转发服务器。需求背景：笔者在开发一款C/S架构的项目，C为Android移动客户端，S为Linux上C实现的服务器。没有带公网IP的云主机，只有一台安装了VMware的笔记本。VMware中安装了Ubuntu15.04。笔记本通过WiFi上网，因为XX原因，VMware的网络模式需要设置为NAT模式，因此Ubuntu中ifconfig">
+<meta property="og:image" content="http://yoursite.com/images/nodetcpproxy/snapshort.png">
+<meta property="og:updated_time" content="2015-08-19T08:23:55.288Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hexo">
-<meta name="twitter:description">
+<meta name="twitter:title" content="nodetcpproxy">
+<meta name="twitter:description" content="nodetcpproxy 是在nodejs环境中运行的简易TCP转发服务器。需求背景：笔者在开发一款C/S架构的项目，C为Android移动客户端，S为Linux上C实现的服务器。没有带公网IP的云主机，只有一台安装了VMware的笔记本。VMware中安装了Ubuntu15.04。笔记本通过WiFi上网，因为XX原因，VMware的网络模式需要设置为NAT模式，因此Ubuntu中ifconfig">
   
   
     <link rel="icon" href="/favicon.png">
@@ -52,16 +54,15 @@
     </div>
   </div>
 </header>
-    <section id="main" class="outer">
-      <article id="post-nodetcpproxy" class="article article-type-post" itemscope itemprop="blogPost">
+    <section id="main" class="outer"><article id="post-nodetcpproxy" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
     
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/08/19/nodetcpproxy/">nodetcpproxy</a>
+    <h1 class="article-title" itemprop="name">
+      nodetcpproxy
     </h1>
   
 
@@ -89,189 +90,26 @@
       
     </div>
   
-  </div>
-  
-</article>
-
-
-    
-      <article id="post-use-so-in-android-studio" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/08/06/use-so-in-android-studio/">在Android Studio中使用so</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      <a href="/2015/08/06/use-so-in-android-studio/" class="article-date">
-  <time datetime="2015-08-06T10:51:17.000Z" itemprop="datePublished">2015-08-06</time>
-</a>
+    <footer class="article-footer">
       
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <ul>
-<li><a href="http://www.jianshu.com/p/20cee429d1c3" target="_blank" rel="external">这里有更全面的介绍</a></li>
-</ul>
-<p>与Eclipse不同，Android Studio中使用so时需要手动添加依赖关系(至少截至到AS1.3版本时还是这样的)。<br>比如在使用腾讯地图SDK时，我们需要将libtencentloc.so文件拷贝到app的libs目录下(你也可以拷贝到别处)，然后在app的build.gradle文件中添加代码：<br><figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">sourceSets</span> &#123;</span><br><span class="line">    main &#123;</span><br><span class="line">        jniLibs.srcDirs = [<span class="string">'libs'</span>]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<ul>
-<li>项目的结构和app模块的build.gradle文件看起来是这样的：<br><img src="/images/use-so-in-android-studio/1.png" alt=""></li>
-</ul>
-
-      
-    </div>
+    </footer>
   
   </div>
   
-</article>
-
-
     
-      <article id="post-use-aar-in-android-studio" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
+<nav id="article-nav">
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/08/03/use-aar-in-android-studio/">在Android Studio中使用aar</a>
-    </h1>
   
-
-      </header>
-    
-    <div class="article-meta">
-      <a href="/2015/08/03/use-aar-in-android-studio/" class="article-date">
-  <time datetime="2015-08-03T14:19:19.000Z" itemprop="datePublished">2015-08-03</time>
-</a>
-      
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="什么是aar？">什么是aar？</h3><p>按照Google官方的说法，aar是以二进制形式发布的Android Library Project<br>aar文件以.aar作为扩展名，而实际上它就是一个zip压缩包，我们将<em>.aar文件重名为为</em>.zip，即可用解压缩软件打开（与apk一样）。<br>其目录结构如下图所示:<br><img src="/images/use-aar-in-android-studio/aar.png" alt=""><br>可以看到aar包含了项目的布局等资源文件。</p>
-<hr>
-<h3 id="使用aar">使用aar</h3><p>我们以github上一个开源的颜色选择器<a href="https://github.com/QuadFlask/colorpicker" target="_blank" rel="external">colorpicker</a>为例。<br>这里我们也不直接编辑build.gradle文件，而是通过IDE提供的菜单入口进行aar文件的加载。</p>
-<ol>
-<li>首先下载aar文件。下载的aar文件不必拷贝到你的工程目录下，在后面的加载过程中Android Studio会自动处理。</li>
-<li>Android Studio中按F4（或者你知道的其他方式）打开Project Structure面板，单击面板左上角的+添加新的Module，如图：<br><img src="/images/use-aar-in-android-studio/as1.png" alt=""></li>
-<li>在打开的Create New Module面板中选择Import .JAR/AAR Package，单击Next，如图：<br><img src="/images/use-aar-in-android-studio/as2.png" alt=""></li>
-<li>选择我们下载到colorpicker的aar文件，修改Subproject name为colorpicker，如图：<br><img src="/images/use-aar-in-android-studio/as3.png" alt=""></li>
-<li>单击Finish，完成Module加载，完成后你会app的同级目录看到以colorpicker命名的字项目，如图：<br><img src="/images/use-aar-in-android-studio/as4.png" alt=""></li>
-<li>再次打开Project Structure面板，选择app模块的Dependencies页面，为app模块添加Module Dependence，选择刚才加载的colorpicker模块，单击OK。<br><img src="/images/use-aar-in-android-studio/as5.png" alt=""><br>7.如果我们的aar没有更多依赖的话，至此我们就完成了colorpicker.aar的加载，可以愉快的使用了。<br>但是我们的colorpicker.aar还依赖了github上的<a href="https://github.com/rengwuxian/MaterialEditText" target="_blank" rel="external">MaterialEditText</a>，所以我么继续下载MaterialEditText的aar文件，参考上述步骤完成加载。<br><img src="/images/use-aar-in-android-studio/as6.png" alt=""><br><img src="/images/use-aar-in-android-studio/as7.png" alt=""></li>
-<li>OK，colorpicker.aar加载OK了，我们在layout中使用colorpicker.aar提供的ColorPickerView测试下效果：<br><img src="/images/use-aar-in-android-studio/colorpicker-effect.jpg" width="30%"></li>
-</ol>
-
-      
-    </div>
+    <a href="/2015/08/06/use-so-in-android-studio/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">在Android Studio中使用so&nbsp;<span>&gt;</span></div>
+    </a>
   
-  </div>
+</nav>
+
   
 </article>
 
-
-    
-      <article id="post-programmer-charts" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/07/31/programmer-charts/">极客的速查图表</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      <a href="/2015/07/31/programmer-charts/" class="article-date">
-  <time datetime="2015-07-31T02:37:38.000Z" itemprop="datePublished">2015-07-31</time>
-</a>
-      
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <ol>
-<li><a href="/images/programmer-charts/git.png">Git</a></li>
-<li><a href="/images/programmer-charts/vim.png">Vim</a></li>
-<li><a href="/images/programmer-charts/GPIO_Pi2.png">Raspberry Pi2 GPIO</a></li>
-<li><a href="/images/programmer-charts/arduino-uno-328p.png">Arduino Uno</a></li>
-<li><a href="/images/programmer-charts/arduino-ATMega328p.png">Arduino - ATMega328P</a></li>
-<li><a href="/images/programmer-charts/arduino-ATMega2560.png">Arduino - ATMega2560</a></li>
-<li><a href="/images/programmer-charts/arduino-ATTiny.jpg">Arduino - ATTiny</a></li>
-</ol>
-
-      
-    </div>
-  
-  </div>
-  
-</article>
-
-
-    
-      <article id="post-arduloader" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/07/15/arduloader/">Arduloader</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      <a href="/2015/07/15/arduloader/" class="article-date">
-  <time datetime="2015-07-15T07:13:36.000Z" itemprop="datePublished">2015-07-15</time>
-</a>
-      
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Arduloader 用于烧写HEX文件到Arduino开发板。<br>该工具使用Python语言开发，界面由PyQt4实现，烧写功能由三方工具avrdude完成。<br>可将Arduloader理解为avrdude命令行工具的UI外壳，以方便日常使用。<br>因为由Python开发，该工具是跨平台的。笔者已将该工具开源在Github，欢迎感兴趣的Arduino爱好者下载使用。</p>
-<p><em><a href="https://github.com/uname/Arduloader" target="_blank" rel="external">Arduloader的Github开源地址</a></em><br><a href="https://github.com/uname/Arduloader/releases/download/V1.0Beta/WinRelease_V1.0Beta.zip" target="_blank" rel="external">下载Windows发布版V1.0Beta</a></p>
-<ul>
-<li>Windows平台上如何生成Arduloader.exe</li>
-</ul>
-<ol>
-<li><p>确认你已经安装了Python和对应版本的PyQt4、py2exe。<br>在Python交互模式下执行如下测试，若没有报错，则环境OK。<br><img src="/images/arduloader/deplibs.png" alt=""></p>
-</li>
-<li><p>下载源码，在DOS命令行窗口中进入源码根目录，执行buildexe.py py2exe<br><img src="/images/arduloader/buildexe.png" alt=""></p>
-</li>
-<li><p>执行OK后，会在当前目录生成build和dist目录，其中build目录可删除，dist下的main.exe即为Arduloader的EXE版本。<br>将源码根目录下的avrtool目录和boards.txt拷贝到dist目录下，即可使用。<br><img src="/images/arduloader/winversion.png" alt=""></p>
-</li>
-</ol>
-<hr>
-<ul>
-<li>效果截图<br><img src="/images/arduloader/snapshot.png" alt=""></li>
-</ul>
-
-      
-    </div>
-  
-  </div>
-  
-</article>
-
-
-    </section>
+</section>
     <footer id="footer">
   
   <div class="outer">
