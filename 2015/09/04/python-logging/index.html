@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>python的logging模块 - Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="这里不打算详细介绍logging模块的使用方法，因为该模块使用简单，而且网上也有比较多的介绍文章。仅把个人使用Python写小东西时候的logging模块用法记录下来，以便日后copy
+文件 log.py1234567891011121314#-*- coding: utf-8 -*-import loggingimport syslogger = logging.getLogger(&quot;&quot;)__f">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python的logging模块">
+<meta property="og:url" content="http://yoursite.com/2015/09/04/python-logging/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="这里不打算详细介绍logging模块的使用方法，因为该模块使用简单，而且网上也有比较多的介绍文章。仅把个人使用Python写小东西时候的logging模块用法记录下来，以便日后copy
+文件 log.py1234567891011121314#-*- coding: utf-8 -*-import loggingimport syslogger = logging.getLogger(&quot;&quot;)__f">
+<meta property="og:image" content="http://yoursite.com/images/python-logging/test.png">
+<meta property="og:updated_time" content="2015-09-04T14:49:55.664Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="python的logging模块">
+<meta name="twitter:description" content="这里不打算详细介绍logging模块的使用方法，因为该模块使用简单，而且网上也有比较多的介绍文章。仅把个人使用Python写小东西时候的logging模块用法记录下来，以便日后copy
+文件 log.py1234567891011121314#-*- coding: utf-8 -*-import loggingimport syslogger = logging.getLogger(&quot;&quot;)__f">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+  <link href="/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  
+
+</head>
+<body>
+  <div id="container">
+    <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-inner" class="inner">
+      <a id="main-nav-toggle" class="nav-icon"></a>
+      <a id="logo" class="logo logo-text" href="/">uname&#39;s blog</a>
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/categories">Categories</a>
+        
+          <a class="main-nav-link" href="/tags">Tags</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        <div id="search-form-wrap">
+          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+    <section id="main" class="outer"><article id="post-python-logging" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      python的logging模块
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2015/09/04/python-logging/" class="article-date">
+  <time datetime="2015-09-04T14:41:08.000Z" itemprop="datePublished">2015-09-04</time>
+</a>
+      
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>这里不打算详细介绍logging模块的使用方法，因为该模块使用简单，而且网上也有比较多的介绍文章。<br>仅把个人使用Python写小东西时候的logging模块用法记录下来，以便日后copy</p>
+<h6 id="文件_log-py">文件 log.py</h6><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#-*- coding: utf-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> logging</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line">logger = logging.getLogger(<span class="string">""</span>)</span><br><span class="line">__formatter = logging.Formatter(<span class="string">"[%(levelname)-7s][%(asctime)s][%(filename)s:%(lineno)d] %(message)s"</span>, <span class="string">"%d %b %Y %H:%M:%S"</span>)</span><br><span class="line">__streamHandler = logging.StreamHandler(sys.stderr)</span><br><span class="line">__streamHandler.setFormatter(__formatter)</span><br><span class="line">__fileHandler = logging.FileHandler(<span class="string">"debug.log"</span>)</span><br><span class="line">__fileHandler.setFormatter(__formatter)</span><br><span class="line"></span><br><span class="line">logger.setLevel(logging.DEBUG)</span><br><span class="line">logger.addHandler(__streamHandler)</span><br><span class="line">logger.addHandler(__fileHandler)</span><br></pre></td></tr></table></figure>
+<h6 id="使用">使用</h6><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> log <span class="keyword">import</span> logger</span><br><span class="line">logger.debug(<span class="string">"this is a debug message"</span>)</span><br><span class="line">logger.warning(<span class="string">"this is a warning message"</span>)</span><br><span class="line">logger.error(<span class="string">"this is a error message"</span>)</span><br></pre></td></tr></table></figure>
+<h6 id="效果">效果</h6><p><img src="/images/python-logging/test.png" alt=""></p>
+
+      
+    </div>
+  
+    <footer class="article-footer">
+      
+    </footer>
+  
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2015/08/28/ubuntu-samba/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">在ubuntu中配置samba&nbsp;<span>&gt;</span></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2015 John Doe&nbsp;
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>, theme by <a href="http://github.com/ppoffice">PPOffice</a>
+    </div>
+  </div>
+</footer>
+    
+
+<script src="/js/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+
+  </div>
+</body>
+</html>
