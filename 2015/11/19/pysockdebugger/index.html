@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>开源的TCP/UDP网络通信调试器 - Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="笔者在参与的一些项目中，经常需要对使用TCP或UDP通信的协议进行调试。除针对业务协议写一些测试客户端或者脚本外，笔者也会借助网上的现有TCP/UDP调试工具做一些简单的连通和ECHO回包测试。用过一些工具，总有些不顺手的地方，于是利用琐碎时间，自己用PyQt4做了一个叫PySockDebugger的小东西，已在Github开源PySockDebuger（Debugger误写为Debuger，不再">
+<meta property="og:type" content="article">
+<meta property="og:title" content="开源的TCP/UDP网络通信调试器">
+<meta property="og:url" content="http://yoursite.com/2015/11/19/pysockdebugger/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="笔者在参与的一些项目中，经常需要对使用TCP或UDP通信的协议进行调试。除针对业务协议写一些测试客户端或者脚本外，笔者也会借助网上的现有TCP/UDP调试工具做一些简单的连通和ECHO回包测试。用过一些工具，总有些不顺手的地方，于是利用琐碎时间，自己用PyQt4做了一个叫PySockDebugger的小东西，已在Github开源PySockDebuger（Debugger误写为Debuger，不再">
+<meta property="og:image" content="http://yoursite.com/images/pysockdebugger/snapshot.png">
+<meta property="og:updated_time" content="2015-11-23T07:04:20.645Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="开源的TCP/UDP网络通信调试器">
+<meta name="twitter:description" content="笔者在参与的一些项目中，经常需要对使用TCP或UDP通信的协议进行调试。除针对业务协议写一些测试客户端或者脚本外，笔者也会借助网上的现有TCP/UDP调试工具做一些简单的连通和ECHO回包测试。用过一些工具，总有些不顺手的地方，于是利用琐碎时间，自己用PyQt4做了一个叫PySockDebugger的小东西，已在Github开源PySockDebuger（Debugger误写为Debuger，不再">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+  <link href="/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  
+
+</head>
+<body>
+  <div id="container">
+    <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-inner" class="inner">
+      <a id="main-nav-toggle" class="nav-icon"></a>
+      <a id="logo" class="logo logo-text" href="/">uname&#39;s blog</a>
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/categories">Categories</a>
+        
+          <a class="main-nav-link" href="/tags">Tags</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        <div id="search-form-wrap">
+          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+    <section id="main" class="outer"><article id="post-pysockdebugger" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      开源的TCP/UDP网络通信调试器
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2015/11/19/pysockdebugger/" class="article-date">
+  <time datetime="2015-11-19T14:32:20.000Z" itemprop="datePublished">2015-11-19</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/我的开源工具/">我的开源工具</a>
+  </div>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>笔者在参与的一些项目中，经常需要对使用TCP或UDP通信的协议进行调试。除针对业务协议写一些测试客户端或者脚本外，笔者也会借助网上的现有TCP/UDP调试工具做一些简单的连通和ECHO回包测试。<br>用过一些工具，总有些不顺手的地方，于是利用琐碎时间，自己用PyQt4做了一个叫<strong>PySockDebugger</strong>的小东西，<strong>已在Github开源</strong><a href="https://github.com/uname/PySockDebuger" target="_blank" rel="external">PySockDebuger</a>（Debugger误写为Debuger，不再修改）。<br>1.0Beta版本的windows版本已经通过Py2exe打包并上传到Github项目的<a href="https://github.com/uname/PySockDebuger/releases" target="_blank" rel="external">release</a>目录下。欢迎下载体验：）<br>因为使用Python实现，所以在Mac和Linux桌面环境下均可使用（需安装PyQt4，另外有个获取本地IP的小BUG，暂未修改，若使用时遇到，只需按照堆栈错误提示，简单修改下即可）。<br>主要有以下模式:</p>
+<ol>
+<li>TCP服务器</li>
+<li>TCP客户端</li>
+<li>UDP服务器(主动绑定本地端口)</li>
+<li>UDP客户端</li>
+</ol>
+<p>另外支持在同一个窗口内创建多个实例，不同的实例在Tab页中显示。下过如下图：<br><img src="/images/pysockdebugger/snapshot.png" alt=""></p>
+<p>除重复发送和UDP客户端模式下的绑定本地端口，这两个功能暂未实现外（代码好写，但暂未有时间），其他功能都测试可用。<br>后面打算做个插件功能，由用户实现发送和接收数据的pack和unpack过程，这样在调试不同的协议时，只需加载实现了pack和unpack功能的插件即可。而因为PySockDebuger使用Python实现，这样的插件实现起来还是很方便的。</p>
+
+      
+    </div>
+  
+    <footer class="article-footer">
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/网络与调试/">网络与调试</a></li></ul>
+
+    </footer>
+  
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/11/26/minimd5/" id="article-nav-newer" class="article-nav-link-wrap">
+      <div class="article-nav-title"><span>&lt;</span>&nbsp;
+        
+          minimd5
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/09/04/python-logging/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">python的logging模块&nbsp;<span>&gt;</span></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2015 John Doe&nbsp;
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>, theme by <a href="http://github.com/ppoffice">PPOffice</a>
+    </div>
+  </div>
+</footer>
+    
+
+<script src="/js/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+
+  </div>
+</body>
+</html>
