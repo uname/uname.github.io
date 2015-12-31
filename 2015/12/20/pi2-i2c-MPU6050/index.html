@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>树莓派2通过I2C访问MPU6050 - Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="笔者最近做了一个平衡车，主要用到了STM32F10x + MPU9250 + FreeRTOS。手边正好还有一块MPU6050的模块和树莓派2，就趁热打铁先把树莓派访问MPU6050的路走通，以便后面需要时查阅。
+1. 首先要启动树莓派的I2C功能sudo mount /dev/mmcblk0p1 /mnt/cd /mntsudo vim config.txt
+找到下面两行将注释符号#删掉，如果没">
+<meta property="og:type" content="article">
+<meta property="og:title" content="树莓派2通过I2C访问MPU6050">
+<meta property="og:url" content="http://yoursite.com/2015/12/20/pi2-i2c-MPU6050/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="笔者最近做了一个平衡车，主要用到了STM32F10x + MPU9250 + FreeRTOS。手边正好还有一块MPU6050的模块和树莓派2，就趁热打铁先把树莓派访问MPU6050的路走通，以便后面需要时查阅。
+1. 首先要启动树莓派的I2C功能sudo mount /dev/mmcblk0p1 /mnt/cd /mntsudo vim config.txt
+找到下面两行将注释符号#删掉，如果没">
+<meta property="og:image" content="http://yoursite.com/images/pi2-I2C-MPU6050/1.png">
+<meta property="og:image" content="http://yoursite.com/images/pi2-I2C-MPU6050/2.png">
+<meta property="og:image" content="http://yoursite.com/images/pi2-I2C-MPU6050/3.png">
+<meta property="og:image" content="http://yoursite.com/images/pi2-I2C-MPU6050/4.png">
+<meta property="og:updated_time" content="2015-12-31T07:31:00.912Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="树莓派2通过I2C访问MPU6050">
+<meta name="twitter:description" content="笔者最近做了一个平衡车，主要用到了STM32F10x + MPU9250 + FreeRTOS。手边正好还有一块MPU6050的模块和树莓派2，就趁热打铁先把树莓派访问MPU6050的路走通，以便后面需要时查阅。
+1. 首先要启动树莓派的I2C功能sudo mount /dev/mmcblk0p1 /mnt/cd /mntsudo vim config.txt
+找到下面两行将注释符号#删掉，如果没">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+  <link href="/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  
+
+</head>
+<body>
+  <div id="container">
+    <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-inner" class="inner">
+      <a id="main-nav-toggle" class="nav-icon"></a>
+      <a id="logo" class="logo logo-text" href="/">uname&#39;s blog</a>
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/categories">Categories</a>
+        
+          <a class="main-nav-link" href="/tags">Tags</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        <div id="search-form-wrap">
+          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+    <section id="main" class="outer"><article id="post-pi2-i2c-MPU6050" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      树莓派2通过I2C访问MPU6050
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2015/12/20/pi2-i2c-MPU6050/" class="article-date">
+  <time datetime="2015-12-20T06:16:47.000Z" itemprop="datePublished">2015-12-20</time>
+</a>
+      
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>笔者最近做了一个平衡车，主要用到了STM32F10x + MPU9250 + FreeRTOS。<br>手边正好还有一块MPU6050的模块和树莓派2，就趁热打铁先把树莓派访问MPU6050的路走通，以便后面需要时查阅。</p>
+<h6 id="1-_首先要启动树莓派的I2C功能">1. 首先要启动树莓派的I2C功能</h6><p>sudo mount /dev/mmcblk0p1 /mnt/<br>cd /mnt<br>sudo vim config.txt</p>
+<p>找到下面两行<br><img src="/images/pi2-I2C-MPU6050/1.png" alt=""><br>将注释符号#删掉，如果没有上面两行则自己编辑保存。然后reboot系统。</p>
+<h6 id="2-_安装i2c-tools">2. 安装i2c-tools</h6><p>sudo apt-get install i2c-tools</p>
+<p>顺便推荐个国内的树莓派软件源:<br>deb <a href="http://mirrors.ustc.edu.cn/raspbian/raspbian/" target="_blank" rel="external">http://mirrors.ustc.edu.cn/raspbian/raspbian/</a>   wheezy main contrib non-free rpi<br>编辑/etc/apt/sources.list，注释掉官方源，添加上面那个。重新sudo apt-get update下。</p>
+<h6 id="3-_连接MPU6050设备，并测试I2C驱动是否已经OK">3. 连接MPU6050设备，并测试I2C驱动是否已经OK</h6><p>接线只需要四根：电源正3.3V，Ground，SCL，SDA。<br>MPU6050模块上会有标志，与树莓派对齐用杜邦线接好即可。<br>树莓派2的IO定义如图：<br><img src="/images/pi2-I2C-MPU6050/2.png" alt=""></p>
+<p>连接好设备后，通过命令：<br>i2cdetect -l<br>查看设备是否已正常工作。如果你的树莓派只接了MPU6050一个I2C设备，对应设备文件为：<br>/dev/i2c-1<br><img src="/images/pi2-I2C-MPU6050/3.png" alt=""></p>
+<p>至此I2C驱动已开启，设备工作正常，可以继续写代码访问数据了。</p>
+<hr>
+<h6 id="4-_代码">4. 代码</h6><p>Github上有个<a href="https://github.com/rpicopter/MotionSensorExample" target="_blank" rel="external">MotionSensorExample</a>用于树莓派对MPU6050/MPU6500/MPU9150/MPU9250的I2C访问。<br>不过笔者clone了代码，在树莓派2上编译失败了。<br>有人也遇到了相同的问题并发了issue#<br><a href="https://github.com/rpicopter/MotionSensorExample/issues/2" target="_blank" rel="external">inv_mpu_lib/inv_mpu.c:392:2: error: expected primary-expression before ‘.’ token</a><br>截至到笔者发此文章时，作者似乎也并未修改该问题（其实就是树莓派2上安装版本的g++编译器不支持C99标准的C struct复合字面量初始化问题）。<br>于是笔者fock了源码，并修复了这个错误。所以这里就用我修改后的<a href="https://github.com/uname/MotionSensorExample" target="_blank" rel="external">MotionSensorExample</a>来测试吧。</p>
+<h6 id="5-_编译&amp;&amp;测试">5. 编译&amp;&amp;测试</h6><p>ssh或者serial登陆到树莓派2，clone笔者修改后的MotionSensorExample：</p>
+<p>git clone <a href="https://github.com/uname/MotionSensorExample" target="_blank" rel="external">https://github.com/uname/MotionSensorExample</a><br>cd MotionSensorExample<br>make</p>
+<p>如果一切OK的，会在MotionSensorExample生成一个测试程序mstest，执行mstest观察数据读数。<br><img src="/images/pi2-I2C-MPU6050/4.png" alt=""></p>
+<h6 id="6-_其他">6. 其他</h6><p>MotionSensorExample通过条件编译的方式来支持不同的MPU（6050/6500/9150/9250），只要修改位于MotionSensorExample/MotionSenso下的Makefile即可：<br>CXX_OPTS=-c -DMPU6050 -DMPU_DEBUGOFF -I../libs/</p>
+<p>实际上笔者这次测试用的是MPU9250，但是如果编译时使用-DMPU9250，则编译出的程序并不能正确工作，<br>不过既然-DMPU6050可以拿到yaw, pitch, roll数据，暂时也就够用了。错误定位等到有时间再慢慢看吧。</p>
+
+      
+    </div>
+  
+    <footer class="article-footer">
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/树莓派/">树莓派</a></li></ul>
+
+    </footer>
+  
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/12/31/newyear2016/" id="article-nav-newer" class="article-nav-link-wrap">
+      <div class="article-nav-title"><span>&lt;</span>&nbsp;
+        
+          2015++
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/12/14/use-swig-to-create-python-module/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">使用swig创建Python模块&nbsp;<span>&gt;</span></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2015 John Doe&nbsp;
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>, theme by <a href="http://github.com/ppoffice">PPOffice</a>
+    </div>
+  </div>
+</footer>
+    
+
+<script src="/js/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+
+  </div>
+</body>
+</html>

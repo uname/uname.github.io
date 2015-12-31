@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>使用swig创建Python模块 - Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="做Python开发，有时出于性能考虑或需要调用已有C/C++实现的东西时，我们就要使用Python的ctypes模块提供的CDLL方法或者自己编写扩展模块。ctypes的CDLL方法对不含有C++类的dll或者so的访问还是比较方便靠谱的，但是对C++类方法的访问似乎不太好用。这时我们就需要自己编写扩展模块了。
+编写扩展模块可以使用Python提供的API从0开始实现（比较累），也可以借助boos">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用swig创建Python模块">
+<meta property="og:url" content="http://yoursite.com/2015/12/14/use-swig-to-create-python-module/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="做Python开发，有时出于性能考虑或需要调用已有C/C++实现的东西时，我们就要使用Python的ctypes模块提供的CDLL方法或者自己编写扩展模块。ctypes的CDLL方法对不含有C++类的dll或者so的访问还是比较方便靠谱的，但是对C++类方法的访问似乎不太好用。这时我们就需要自己编写扩展模块了。
+编写扩展模块可以使用Python提供的API从0开始实现（比较累），也可以借助boos">
+<meta property="og:image" content="http://yoursite.com/images/use-swig-to-create-python-module/pyminimd5.c.png">
+<meta property="og:image" content="http://yoursite.com/images/use-swig-to-create-python-module/test.png">
+<meta property="og:updated_time" content="2015-12-31T07:31:00.913Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用swig创建Python模块">
+<meta name="twitter:description" content="做Python开发，有时出于性能考虑或需要调用已有C/C++实现的东西时，我们就要使用Python的ctypes模块提供的CDLL方法或者自己编写扩展模块。ctypes的CDLL方法对不含有C++类的dll或者so的访问还是比较方便靠谱的，但是对C++类方法的访问似乎不太好用。这时我们就需要自己编写扩展模块了。
+编写扩展模块可以使用Python提供的API从0开始实现（比较累），也可以借助boos">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+  <link href="/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  
+
+</head>
+<body>
+  <div id="container">
+    <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-inner" class="inner">
+      <a id="main-nav-toggle" class="nav-icon"></a>
+      <a id="logo" class="logo logo-text" href="/">uname&#39;s blog</a>
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/categories">Categories</a>
+        
+          <a class="main-nav-link" href="/tags">Tags</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        <div id="search-form-wrap">
+          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+    <section id="main" class="outer"><article id="post-use-swig-to-create-python-module" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      使用swig创建Python模块
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2015/12/14/use-swig-to-create-python-module/" class="article-date">
+  <time datetime="2015-12-14T08:50:40.000Z" itemprop="datePublished">2015-12-14</time>
+</a>
+      
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>做Python开发，有时出于性能考虑或需要调用已有C/C++实现的东西时，我们就要使用Python的ctypes模块提供的CDLL方法或者自己编写扩展模块。<br>ctypes的CDLL方法对不含有C++类的dll或者so的访问还是比较方便靠谱的，但是对C++类方法的访问似乎不太好用。这时我们就需要自己编写扩展模块了。</p>
+<p>编写扩展模块可以使用Python提供的API从0开始实现（比较累），也可以借助boost、swig或者sip等工具库来实现。知名度很高的PyQt4（Qt4的Python绑定）就是使用sip来完成的。<br>这里笔者以上一篇文章介绍的<a href="http://uname.github.io/2015/11/26/minimd5/" target="_blank" rel="external">minimd5</a>项目为例，记录使用swig创建Python扩展模块的方法，以便日后翻查。<br>以下步骤中所述源码，可在笔者上传到github上的<a href="https://github.com/uname/minimd5" target="_blank" rel="external">minimd5</a>项目中找到</p>
+<ol>
+<li><p>首先安装swig和python开发环境，笔者在ubuntu下使用如下命令完成</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install swig python-dev</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>编写pyminimd5.c，实现函数: char <em>md5sum(const char </em>const file);<br><img src="/images/use-swig-to-create-python-module/pyminimd5.c.png" alt=""></p>
+</li>
+<li><p>编写pyminimd5.i，该文件由swig加载生成pyminimd5_wrap.cxx文件，具体方法看下一步中的Makefile代码片段</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">%module minimd5</span><br><span class="line">%&#123;</span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">char</span> *md5sum(<span class="keyword">const</span> <span class="keyword">char</span> *<span class="keyword">const</span> file);</span><br><span class="line">%&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">char</span> *md5sum(<span class="keyword">const</span> <span class="keyword">char</span> *<span class="keyword">const</span> file);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修改minimd5的Makfile，增加用于编译_minimd5.so的代码</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">pyminimd5: $(PYMODULE_SOURCES)</span><br><span class="line">    swig -python -c++ pyminimd5.i</span><br><span class="line">    g++ -c pyminimd5.c pyminimd5_wrap.cxx md5.c -I/usr/include/python2.7/ -fPIC</span><br><span class="line">    g++ -shared pyminimd5.o pyminimd5_wrap.o md5.o -o $(PYMODULE_SO)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>make pyminimd5生成_minimd5.so，使用Python加载并测试<br><img src="/images/use-swig-to-create-python-module/test.png" alt=""></p>
+</li>
+</ol>
+
+      
+    </div>
+  
+    <footer class="article-footer">
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/代码笔记/">代码笔记</a></li></ul>
+
+    </footer>
+  
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/12/20/pi2-i2c-MPU6050/" id="article-nav-newer" class="article-nav-link-wrap">
+      <div class="article-nav-title"><span>&lt;</span>&nbsp;
+        
+          树莓派2通过I2C访问MPU6050
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/11/26/minimd5/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">minimd5&nbsp;<span>&gt;</span></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2015 John Doe&nbsp;
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>, theme by <a href="http://github.com/ppoffice">PPOffice</a>
+    </div>
+  </div>
+</footer>
+    
+
+<script src="/js/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+
+  </div>
+</body>
+</html>

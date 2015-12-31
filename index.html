@@ -53,6 +53,151 @@
   </div>
 </header>
     <section id="main" class="outer">
+      <article id="post-newyear2016" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/12/31/newyear2016/">2015++</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2015/12/31/newyear2016/" class="article-date">
+  <time datetime="2015-12-31T07:30:50.000Z" itemprop="datePublished">2015-12-31</time>
+</a>
+      
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>此刻，办公室下午三点半起来活动的广播响起。<br>记得这个活动在12年发起，不知不觉的光阴流转，忽然已是2015的最后一天！<br>深圳的冬天，没有一丝冷意。办公室的暖气甚至一度让我觉得闷热，但在此刻，我却感到了阵阵冷意，那是一种失落时由内而外的刺痛。<br>窗外，依旧是记忆中的模样——常年绿色的行道树、匆忙的车流、还有深圳楼市野蛮生长的喧闹……<br>从未在新年来临时如此不舍，愿2016工作顺心，身体健康，家人平安，更祝愿亲爱的一切都好……</p>
+<p><img src="images/newyear2016/IMG_20150911_185636.jpg" alt="Long Beach. LA. USA(拍摄于15年911纪念日)" width="40%"></p>
+
+      
+    </div>
+  
+  </div>
+  
+</article>
+
+
+    
+      <article id="post-pi2-i2c-MPU6050" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/12/20/pi2-i2c-MPU6050/">树莓派2通过I2C访问MPU6050</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2015/12/20/pi2-i2c-MPU6050/" class="article-date">
+  <time datetime="2015-12-20T06:16:47.000Z" itemprop="datePublished">2015-12-20</time>
+</a>
+      
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>笔者最近做了一个平衡车，主要用到了STM32F10x + MPU9250 + FreeRTOS。<br>手边正好还有一块MPU6050的模块和树莓派2，就趁热打铁先把树莓派访问MPU6050的路走通，以便后面需要时查阅。</p>
+<h6 id="1-_首先要启动树莓派的I2C功能">1. 首先要启动树莓派的I2C功能</h6><p>sudo mount /dev/mmcblk0p1 /mnt/<br>cd /mnt<br>sudo vim config.txt</p>
+<p>找到下面两行<br><img src="/images/pi2-I2C-MPU6050/1.png" alt=""><br>将注释符号#删掉，如果没有上面两行则自己编辑保存。然后reboot系统。</p>
+<h6 id="2-_安装i2c-tools">2. 安装i2c-tools</h6><p>sudo apt-get install i2c-tools</p>
+<p>顺便推荐个国内的树莓派软件源:<br>deb <a href="http://mirrors.ustc.edu.cn/raspbian/raspbian/" target="_blank" rel="external">http://mirrors.ustc.edu.cn/raspbian/raspbian/</a>   wheezy main contrib non-free rpi<br>编辑/etc/apt/sources.list，注释掉官方源，添加上面那个。重新sudo apt-get update下。</p>
+<h6 id="3-_连接MPU6050设备，并测试I2C驱动是否已经OK">3. 连接MPU6050设备，并测试I2C驱动是否已经OK</h6><p>接线只需要四根：电源正3.3V，Ground，SCL，SDA。<br>MPU6050模块上会有标志，与树莓派对齐用杜邦线接好即可。<br>树莓派2的IO定义如图：<br><img src="/images/pi2-I2C-MPU6050/2.png" alt=""></p>
+<p>连接好设备后，通过命令：<br>i2cdetect -l<br>查看设备是否已正常工作。如果你的树莓派只接了MPU6050一个I2C设备，对应设备文件为：<br>/dev/i2c-1<br><img src="/images/pi2-I2C-MPU6050/3.png" alt=""></p>
+<p>至此I2C驱动已开启，设备工作正常，可以继续写代码访问数据了。</p>
+<hr>
+<h6 id="4-_代码">4. 代码</h6><p>Github上有个<a href="https://github.com/rpicopter/MotionSensorExample" target="_blank" rel="external">MotionSensorExample</a>用于树莓派对MPU6050/MPU6500/MPU9150/MPU9250的I2C访问。<br>不过笔者clone了代码，在树莓派2上编译失败了。<br>有人也遇到了相同的问题并发了issue#<br><a href="https://github.com/rpicopter/MotionSensorExample/issues/2" target="_blank" rel="external">inv_mpu_lib/inv_mpu.c:392:2: error: expected primary-expression before ‘.’ token</a><br>截至到笔者发此文章时，作者似乎也并未修改该问题（其实就是树莓派2上安装版本的g++编译器不支持C99标准的C struct复合字面量初始化问题）。<br>于是笔者fock了源码，并修复了这个错误。所以这里就用我修改后的<a href="https://github.com/uname/MotionSensorExample" target="_blank" rel="external">MotionSensorExample</a>来测试吧。</p>
+<h6 id="5-_编译&amp;&amp;测试">5. 编译&amp;&amp;测试</h6><p>ssh或者serial登陆到树莓派2，clone笔者修改后的MotionSensorExample：</p>
+<p>git clone <a href="https://github.com/uname/MotionSensorExample" target="_blank" rel="external">https://github.com/uname/MotionSensorExample</a><br>cd MotionSensorExample<br>make</p>
+<p>如果一切OK的，会在MotionSensorExample生成一个测试程序mstest，执行mstest观察数据读数。<br><img src="/images/pi2-I2C-MPU6050/4.png" alt=""></p>
+<h6 id="6-_其他">6. 其他</h6><p>MotionSensorExample通过条件编译的方式来支持不同的MPU（6050/6500/9150/9250），只要修改位于MotionSensorExample/MotionSenso下的Makefile即可：<br>CXX_OPTS=-c -DMPU6050 -DMPU_DEBUGOFF -I../libs/</p>
+<p>实际上笔者这次测试用的是MPU9250，但是如果编译时使用-DMPU9250，则编译出的程序并不能正确工作，<br>不过既然-DMPU6050可以拿到yaw, pitch, roll数据，暂时也就够用了。错误定位等到有时间再慢慢看吧。</p>
+
+      
+    </div>
+  
+    <footer class="article-footer">
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/树莓派/">树莓派</a></li></ul>
+
+    </footer>
+  
+  </div>
+  
+</article>
+
+
+    
+      <article id="post-use-swig-to-create-python-module" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/12/14/use-swig-to-create-python-module/">使用swig创建Python模块</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2015/12/14/use-swig-to-create-python-module/" class="article-date">
+  <time datetime="2015-12-14T08:50:40.000Z" itemprop="datePublished">2015-12-14</time>
+</a>
+      
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>做Python开发，有时出于性能考虑或需要调用已有C/C++实现的东西时，我们就要使用Python的ctypes模块提供的CDLL方法或者自己编写扩展模块。<br>ctypes的CDLL方法对不含有C++类的dll或者so的访问还是比较方便靠谱的，但是对C++类方法的访问似乎不太好用。这时我们就需要自己编写扩展模块了。</p>
+<p>编写扩展模块可以使用Python提供的API从0开始实现（比较累），也可以借助boost、swig或者sip等工具库来实现。知名度很高的PyQt4（Qt4的Python绑定）就是使用sip来完成的。<br>这里笔者以上一篇文章介绍的<a href="http://uname.github.io/2015/11/26/minimd5/" target="_blank" rel="external">minimd5</a>项目为例，记录使用swig创建Python扩展模块的方法，以便日后翻查。<br>以下步骤中所述源码，可在笔者上传到github上的<a href="https://github.com/uname/minimd5" target="_blank" rel="external">minimd5</a>项目中找到</p>
+<ol>
+<li><p>首先安装swig和python开发环境，笔者在ubuntu下使用如下命令完成</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install swig python-dev</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>编写pyminimd5.c，实现函数: char <em>md5sum(const char </em>const file);<br><img src="/images/use-swig-to-create-python-module/pyminimd5.c.png" alt=""></p>
+</li>
+<li><p>编写pyminimd5.i，该文件由swig加载生成pyminimd5_wrap.cxx文件，具体方法看下一步中的Makefile代码片段</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">%module minimd5</span><br><span class="line">%&#123;</span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">char</span> *md5sum(<span class="keyword">const</span> <span class="keyword">char</span> *<span class="keyword">const</span> file);</span><br><span class="line">%&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">char</span> *md5sum(<span class="keyword">const</span> <span class="keyword">char</span> *<span class="keyword">const</span> file);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修改minimd5的Makfile，增加用于编译_minimd5.so的代码</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">pyminimd5: $(PYMODULE_SOURCES)</span><br><span class="line">    swig -python -c++ pyminimd5.i</span><br><span class="line">    g++ -c pyminimd5.c pyminimd5_wrap.cxx md5.c -I/usr/include/python2.7/ -fPIC</span><br><span class="line">    g++ -shared pyminimd5.o pyminimd5_wrap.o md5.o -o $(PYMODULE_SO)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>make pyminimd5生成_minimd5.so，使用Python加载并测试<br><img src="/images/use-swig-to-create-python-module/test.png" alt=""></p>
+</li>
+</ol>
+
+      
+    </div>
+  
+    <footer class="article-footer">
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/代码笔记/">代码笔记</a></li></ul>
+
+    </footer>
+  
+  </div>
+  
+</article>
+
+
+    
       <article id="post-minimd5" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -380,143 +525,9 @@
 
 
     
-      <article id="post-use-aar-in-android-studio" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/08/03/use-aar-in-android-studio/">在Android Studio中使用aar</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      <a href="/2015/08/03/use-aar-in-android-studio/" class="article-date">
-  <time datetime="2015-08-03T14:19:19.000Z" itemprop="datePublished">2015-08-03</time>
-</a>
-      
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="什么是aar？">什么是aar？</h3><p>按照Google官方的说法，aar是以二进制形式发布的Android Library Project<br>aar文件以.aar作为扩展名，而实际上它就是一个zip压缩包，我们将<em>.aar文件重名为为</em>.zip，即可用解压缩软件打开（与apk一样）。<br>其目录结构如下图所示:<br><img src="/images/use-aar-in-android-studio/aar.png" alt=""><br>可以看到aar包含了项目的布局等资源文件。</p>
-<hr>
-<h3 id="使用aar">使用aar</h3><p>我们以github上一个开源的颜色选择器<a href="https://github.com/QuadFlask/colorpicker" target="_blank" rel="external">colorpicker</a>为例。<br>这里我们也不直接编辑build.gradle文件，而是通过IDE提供的菜单入口进行aar文件的加载。</p>
-<ol>
-<li>首先下载aar文件。下载的aar文件不必拷贝到你的工程目录下，在后面的加载过程中Android Studio会自动处理。</li>
-<li>Android Studio中按F4（或者你知道的其他方式）打开Project Structure面板，单击面板左上角的+添加新的Module，如图：<br><img src="/images/use-aar-in-android-studio/as1.png" alt=""></li>
-<li>在打开的Create New Module面板中选择Import .JAR/AAR Package，单击Next，如图：<br><img src="/images/use-aar-in-android-studio/as2.png" alt=""></li>
-<li>选择我们下载到colorpicker的aar文件，修改Subproject name为colorpicker，如图：<br><img src="/images/use-aar-in-android-studio/as3.png" alt=""></li>
-<li>单击Finish，完成Module加载，完成后你会app的同级目录看到以colorpicker命名的字项目，如图：<br><img src="/images/use-aar-in-android-studio/as4.png" alt=""></li>
-<li>再次打开Project Structure面板，选择app模块的Dependencies页面，为app模块添加Module Dependence，选择刚才加载的colorpicker模块，单击OK。<br><img src="/images/use-aar-in-android-studio/as5.png" alt=""><br>7.如果我们的aar没有更多依赖的话，至此我们就完成了colorpicker.aar的加载，可以愉快的使用了。<br>但是我们的colorpicker.aar还依赖了github上的<a href="https://github.com/rengwuxian/MaterialEditText" target="_blank" rel="external">MaterialEditText</a>，所以我么继续下载MaterialEditText的aar文件，参考上述步骤完成加载。<br><img src="/images/use-aar-in-android-studio/as6.png" alt=""><br><img src="/images/use-aar-in-android-studio/as7.png" alt=""></li>
-<li>OK，colorpicker.aar加载OK了，我们在layout中使用colorpicker.aar提供的ColorPickerView测试下效果：<br><img src="/images/use-aar-in-android-studio/colorpicker-effect.jpg" width="30%"></li>
-</ol>
-
-      
-    </div>
-  
-  </div>
-  
-</article>
-
-
-    
-      <article id="post-programmer-charts" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/07/31/programmer-charts/">极客的速查图表</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      <a href="/2015/07/31/programmer-charts/" class="article-date">
-  <time datetime="2015-07-31T02:37:38.000Z" itemprop="datePublished">2015-07-31</time>
-</a>
-      
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <ol>
-<li><a href="/images/programmer-charts/git.png">Git</a></li>
-<li><a href="/images/programmer-charts/vim.png">Vim</a></li>
-<li><a href="/images/programmer-charts/GPIO_Pi2.png">Raspberry Pi2 GPIO</a></li>
-<li><a href="/images/programmer-charts/arduino-uno-328p.png">Arduino Uno</a></li>
-<li><a href="/images/programmer-charts/arduino-ATMega328p.png">Arduino - ATMega328P</a></li>
-<li><a href="/images/programmer-charts/arduino-ATMega2560.png">Arduino - ATMega2560</a></li>
-<li><a href="/images/programmer-charts/arduino-ATTiny.jpg">Arduino - ATTiny</a></li>
-<li><a href="/images/programmer-charts/struct.png">Python - Struct 类型对照表</a></li>
-</ol>
-
-      
-    </div>
-  
-  </div>
-  
-</article>
-
-
-    
-      <article id="post-arduloader" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/07/15/arduloader/">Arduloader</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      <a href="/2015/07/15/arduloader/" class="article-date">
-  <time datetime="2015-07-15T07:13:36.000Z" itemprop="datePublished">2015-07-15</time>
-</a>
-      
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Arduloader 用于烧写HEX文件到Arduino开发板。<br>该工具使用Python语言开发，界面由PyQt4实现，烧写功能由三方工具avrdude完成。<br>可将Arduloader理解为avrdude命令行工具的UI外壳，以方便日常使用。<br>因为由Python开发，该工具是跨平台的。笔者已将该工具开源在Github，欢迎感兴趣的Arduino爱好者下载使用。</p>
-<p><em><a href="https://github.com/uname/Arduloader" target="_blank" rel="external">Arduloader的Github开源地址</a></em><br><a href="https://github.com/uname/Arduloader/releases/download/V1.0Beta/WinRelease_V1.0Beta.zip" target="_blank" rel="external">下载Windows发布版V1.0Beta</a></p>
-<ul>
-<li>Windows平台上如何生成Arduloader.exe</li>
-</ul>
-<ol>
-<li><p>确认你已经安装了Python和对应版本的PyQt4、py2exe。<br>在Python交互模式下执行如下测试，若没有报错，则环境OK。<br><img src="/images/arduloader/deplibs.png" alt=""></p>
-</li>
-<li><p>下载源码，在DOS命令行窗口中进入源码根目录，执行buildexe.py py2exe<br><img src="/images/arduloader/buildexe.png" alt=""></p>
-</li>
-<li><p>执行OK后，会在当前目录生成build和dist目录，其中build目录可删除，dist下的main.exe即为Arduloader的EXE版本。<br>将源码根目录下的avrtool目录和boards.txt拷贝到dist目录下，即可使用。<br><img src="/images/arduloader/winversion.png" alt=""></p>
-</li>
-</ol>
-<hr>
-<ul>
-<li>效果截图<br><img src="/images/arduloader/snapshot.png" alt=""></li>
-</ul>
-
-      
-    </div>
-  
-  </div>
-  
-</article>
-
-
+      <nav id="page-nav">
+        <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+      </nav>
     </section>
     <footer id="footer">
   
