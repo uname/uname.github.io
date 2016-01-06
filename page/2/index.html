@@ -53,6 +53,46 @@
   </div>
 </header>
     <section id="main" class="outer">
+      <article id="post-use-so-in-android-studio" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/08/06/use-so-in-android-studio/">在Android Studio中使用so</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2015/08/06/use-so-in-android-studio/" class="article-date">
+  <time datetime="2015-08-06T10:51:17.000Z" itemprop="datePublished">2015-08-06</time>
+</a>
+      
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ul>
+<li><a href="http://www.jianshu.com/p/20cee429d1c3" target="_blank" rel="external">这里有更全面的介绍</a></li>
+</ul>
+<p>与Eclipse不同，Android Studio中使用so时需要手动添加依赖关系(至少截至到AS1.3版本时还是这样的)。<br>比如在使用腾讯地图SDK时，我们需要将libtencentloc.so文件拷贝到app的libs目录下(你也可以拷贝到别处)，然后在app的build.gradle文件中添加代码：<br><figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">sourceSets</span> &#123;</span><br><span class="line">    main &#123;</span><br><span class="line">        jniLibs.srcDirs = [<span class="string">'libs'</span>]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>项目的结构和app模块的build.gradle文件看起来是这样的：<br><img src="/images/use-so-in-android-studio/1.png" alt=""></li>
+</ul>
+
+      
+    </div>
+  
+  </div>
+  
+</article>
+
+
+    
       <article id="post-use-aar-in-android-studio" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -192,14 +232,14 @@
 
     
       <nav id="page-nav">
-        <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+        <a class="extend prev" rel="prev" href="/">&laquo; 上一页</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
       </nav>
     </section>
     <footer id="footer">
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2015 John Doe&nbsp;
+      &copy; 2016 John Doe&nbsp;
       Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>, theme by <a href="http://github.com/ppoffice">PPOffice</a>
     </div>
   </div>
