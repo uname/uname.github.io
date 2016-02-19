@@ -53,6 +53,51 @@
   </div>
 </header>
     <section id="main" class="outer">
+      <article id="post-tcp2com-debug" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/02/19/tcp2com-debug/">一种嵌入式设备数据的实时无线观察方法</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2016/02/19/tcp2com-debug/" class="article-date">
+  <time datetime="2016-02-19T08:15:05.000Z" itemprop="datePublished">2016-02-19</time>
+</a>
+      
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&emsp;&emsp;笔者有一块STM32的开发板，需要读取MPU6050的姿态数据。这些数据在经过均值和卡尔曼滤波等处理后，得到一些角度数据。这些角度数据对笔者进行的开发调试非常重要，因此需要一种可以实时观察这些数据的手段。<br>最简单的方式是通过一根串口线连接到PC，打开PC端的串口数据处理软件即可。但这样会有一根数据线，数据线的存在造成的物理抖动会干扰到这些数据，并且会阻碍开发板在更大的空间内自由移动。因此需要寻找无线的解决方案。</p>
+<p>&emsp;&emsp;笔者使用如下方式，通过WiFi获取开发板数据并在PC端的RealtimePlotter软件上显示数据波形。<br><img src="/images/com2tcp-debug/solution.png" alt=""></p>
+<ol>
+<li>Serial&lt;-&gt;Tcp Bridge用来将开发板的串口数据通过桥接的方式提供给通过TCP连接的COM2TCP。这里的Serial&lt;-&gt;Tcp Bridge笔者使用一个运行在安装了OpenWRT系统开发板上的Linux进程（sock2serial）。</li>
+<li>COM2TCP是一个可以Windows系统上桥接网络和串口通信的工具，<a href="http://astrogeeks.com/AstroGeeks/COM2TCP/download.html" target="_blank" rel="external">下载地址</a>。下载完成后打开，可看到如下的设置界面：<br><img src="/images/com2tcp-debug/com2tcp.png" alt="">。<br>将IP和TCP Port配置为Serial&lt;-&gt;Tcp Bridge监听的地址和端口。COM Port选择一个未使用的COM口，单击连接即可。</li>
+<li>笔者用来观察波形的软件<a href="https://github.com/uname/RealtimePlotter" target="_blank" rel="external">RealtimePlotter</a>是github上的一个开源工具，使用Processing语言编写。该软件从串口读取数据并绘制波形，支持最大六个通过的数据绘制。<br>数据格式为: “value1 value2 value3 value4 value5 value6\r”。有时间可以把这个工具修改为从TCP服务器读取数据，这样就可以省去COM2TCP了。<br>RealtimePlotter有三个目录，分别为BasicRealtimePlotter、RealtimePlotterArduinoCode和RealtimePlotterWithControlPanel。笔者使用BasicRealtimePlotter，这里需要编辑BasicRealtimePlotter.pde代码，修改在COM2TCP中使用的串口号，如图：<br><img src="/images/com2tcp-debug/comport.png" alt="">。</li>
+</ol>
+<p>一切准备就绪后，运行BasicRealtimePlotter.pde就可以看到数据了。<br>有几点需要注意：</p>
+<ol>
+<li>原始数据仍通过串口输出，波特率设置高点可以更快传输数据。</li>
+<li>BasicRealtimePlotter软件的数据绘制能力有限，数据太快太多有可能绘制不过来。</li>
+</ol>
+
+      
+    </div>
+  
+  </div>
+  
+</article>
+
+
+    
       <article id="post-awesome-c-cn" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -472,64 +517,6 @@
 <p><img src="/images/ubuntu-samba/3.png" alt=""></p>
 <p>现在Windows下敲击Win+R，输入\ubuntu-ip\apache<br>可以愉快的从windows资源管理器访问ubuntu下apache用户主目录下的文件了：）</p>
 
-      
-    </div>
-  
-  </div>
-  
-</article>
-
-
-    
-      <article id="post-use-butterknife-in-AS" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/08/24/use-butterknife-in-AS/">在Android Studio中使用Butter Knife</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      <a href="/2015/08/24/use-butterknife-in-AS/" class="article-date">
-  <time datetime="2015-08-24T14:20:11.000Z" itemprop="datePublished">2015-08-24</time>
-</a>
-      
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <ul>
-<li>Butter Knife 是Android View的注解框架，Github地址为<a href="https://github.com/JakeWharton/butterknife" target="_blank" rel="external">https://github.com/JakeWharton/butterknife</a><br>类似的注解框架还有</li>
-</ul>
-<ol>
-<li><a href="https://github.com/square/dagger" target="_blank" rel="external">dagger</a></li>
-<li><a href="https://github.com/excilys/androidannotations" target="_blank" rel="external">androidannotations</a></li>
-<li>more…</li>
-</ol>
-<p>论性能，Butter Knife因为使用了反射，与androidannotations在编译时生成执行代码的方式相比，自然略差。但其使用方式比较简单，对于干掉findViewById来说已经够用了（当然它能做的不止这个）。</p>
-<h5 id="在Android_Studio中，可以按照如下步骤配置Butter_Knife">在Android Studio中，可以按照如下步骤配置Butter Knife</h5><ol>
-<li>去<a href="http://jakewharton.github.io/butterknife/" target="_blank" rel="external">http://jakewharton.github.io/butterknife/</a> 下载Butter Knife的JAR包<br><img src="/images/use-butterknife-in-AS/download-jar.png" alt=""></li>
-<li>拷贝下载的jar文件到AS的lib目录下<br><img src="/images/use-butterknife-in-AS/copy-jar-to-as.png" alt=""></li>
-<li>编辑app模块的build.gradle文件，添加下图中红色框内的内容<br><img src="/images/use-butterknife-in-AS/write-build-gradle.png" alt=""><br>4.点击AS菜单 Build - Make Project（Ctrl+F9）</li>
-</ol>
-<p>若没有出错，就可以使用Butter Knife了。<br>其官网有详细的使用示例：<br><a href="http://jakewharton.github.io/butterknife/" target="_blank" rel="external">http://jakewharton.github.io/butterknife/</a></p>
-<p>小提示：被注解的view对象不可以再使用private修饰了。</p>
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-66724960-1', 'auto');
-  ga('send', 'pageview');
-
-</script>
       
     </div>
   

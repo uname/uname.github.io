@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>一种嵌入式设备数据的实时无线观察方法 - Uname&#39;s blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="&amp;emsp;&amp;emsp;笔者有一块STM32的开发板，需要读取MPU6050的姿态数据。这些数据在经过均值和卡尔曼滤波等处理后，得到一些角度数据。这些角度数据对笔者进行的开发调试非常重要，因此需要一种可以实时观察这些数据的手段。最简单的方式是通过一根串口线连接到PC，打开PC端的串口数据处理软件即可。但这样会有一根数据线，数据线的存在造成的物理抖动会干扰到这些数据，并且会阻碍开发板在更大的空间内自">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一种嵌入式设备数据的实时无线观察方法">
+<meta property="og:url" content="http://yoursite.com/2016/02/19/tcp2com-debug/index.html">
+<meta property="og:site_name" content="Uname's blog">
+<meta property="og:description" content="&amp;emsp;&amp;emsp;笔者有一块STM32的开发板，需要读取MPU6050的姿态数据。这些数据在经过均值和卡尔曼滤波等处理后，得到一些角度数据。这些角度数据对笔者进行的开发调试非常重要，因此需要一种可以实时观察这些数据的手段。最简单的方式是通过一根串口线连接到PC，打开PC端的串口数据处理软件即可。但这样会有一根数据线，数据线的存在造成的物理抖动会干扰到这些数据，并且会阻碍开发板在更大的空间内自">
+<meta property="og:image" content="http://yoursite.com/images/com2tcp-debug/solution.png">
+<meta property="og:image" content="http://yoursite.com/images/com2tcp-debug/com2tcp.png">
+<meta property="og:image" content="http://yoursite.com/images/com2tcp-debug/comport.png">
+<meta property="og:updated_time" content="2016-02-19T09:12:13.145Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="一种嵌入式设备数据的实时无线观察方法">
+<meta name="twitter:description" content="&amp;emsp;&amp;emsp;笔者有一块STM32的开发板，需要读取MPU6050的姿态数据。这些数据在经过均值和卡尔曼滤波等处理后，得到一些角度数据。这些角度数据对笔者进行的开发调试非常重要，因此需要一种可以实时观察这些数据的手段。最简单的方式是通过一根串口线连接到PC，打开PC端的串口数据处理软件即可。但这样会有一根数据线，数据线的存在造成的物理抖动会干扰到这些数据，并且会阻碍开发板在更大的空间内自">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+  <link href="/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  
+
+</head>
+<body>
+  <div id="container">
+    <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-inner" class="inner">
+      <a id="main-nav-toggle" class="nav-icon"></a>
+      <a id="logo" class="logo logo-text" href="/">uname&#39;s blog</a>
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/categories">Categories</a>
+        
+          <a class="main-nav-link" href="/tags">Tags</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        <div id="search-form-wrap">
+          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+    <section id="main" class="outer"><article id="post-tcp2com-debug" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      一种嵌入式设备数据的实时无线观察方法
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2016/02/19/tcp2com-debug/" class="article-date">
+  <time datetime="2016-02-19T08:15:05.000Z" itemprop="datePublished">2016-02-19</time>
+</a>
+      
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>&emsp;&emsp;笔者有一块STM32的开发板，需要读取MPU6050的姿态数据。这些数据在经过均值和卡尔曼滤波等处理后，得到一些角度数据。这些角度数据对笔者进行的开发调试非常重要，因此需要一种可以实时观察这些数据的手段。<br>最简单的方式是通过一根串口线连接到PC，打开PC端的串口数据处理软件即可。但这样会有一根数据线，数据线的存在造成的物理抖动会干扰到这些数据，并且会阻碍开发板在更大的空间内自由移动。因此需要寻找无线的解决方案。</p>
+<p>&emsp;&emsp;笔者使用如下方式，通过WiFi获取开发板数据并在PC端的RealtimePlotter软件上显示数据波形。<br><img src="/images/com2tcp-debug/solution.png" alt=""></p>
+<ol>
+<li>Serial&lt;-&gt;Tcp Bridge用来将开发板的串口数据通过桥接的方式提供给通过TCP连接的COM2TCP。这里的Serial&lt;-&gt;Tcp Bridge笔者使用一个运行在安装了OpenWRT系统开发板上的Linux进程（sock2serial）。</li>
+<li>COM2TCP是一个可以Windows系统上桥接网络和串口通信的工具，<a href="http://astrogeeks.com/AstroGeeks/COM2TCP/download.html" target="_blank" rel="external">下载地址</a>。下载完成后打开，可看到如下的设置界面：<br><img src="/images/com2tcp-debug/com2tcp.png" alt="">。<br>将IP和TCP Port配置为Serial&lt;-&gt;Tcp Bridge监听的地址和端口。COM Port选择一个未使用的COM口，单击连接即可。</li>
+<li>笔者用来观察波形的软件<a href="https://github.com/uname/RealtimePlotter" target="_blank" rel="external">RealtimePlotter</a>是github上的一个开源工具，使用Processing语言编写。该软件从串口读取数据并绘制波形，支持最大六个通过的数据绘制。<br>数据格式为: “value1 value2 value3 value4 value5 value6\r”。有时间可以把这个工具修改为从TCP服务器读取数据，这样就可以省去COM2TCP了。<br>RealtimePlotter有三个目录，分别为BasicRealtimePlotter、RealtimePlotterArduinoCode和RealtimePlotterWithControlPanel。笔者使用BasicRealtimePlotter，这里需要编辑BasicRealtimePlotter.pde代码，修改在COM2TCP中使用的串口号，如图：<br><img src="/images/com2tcp-debug/comport.png" alt="">。</li>
+</ol>
+<p>一切准备就绪后，运行BasicRealtimePlotter.pde就可以看到数据了。<br>有几点需要注意：</p>
+<ol>
+<li>原始数据仍通过串口输出，波特率设置高点可以更快传输数据。</li>
+<li>BasicRealtimePlotter软件的数据绘制能力有限，数据太快太多有可能绘制不过来。</li>
+</ol>
+
+      
+    </div>
+  
+    <footer class="article-footer">
+      
+    </footer>
+  
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2016/02/15/awesome-c-cn/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">C 语言资源大全中文版&nbsp;<span>&gt;</span></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 HeQingwei&nbsp;
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>, theme by <a href="http://github.com/ppoffice">PPOffice</a>
+    </div>
+  </div>
+</footer>
+    
+
+<script src="/js/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+
+  </div>
+</body>
+</html>
