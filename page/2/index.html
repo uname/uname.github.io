@@ -53,6 +53,61 @@
   </div>
 </header>
     <section id="main" class="outer">
+      <article id="post-ubuntu-samba" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/08/28/ubuntu-samba/">在ubuntu中配置samba</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2015/08/28/ubuntu-samba/" class="article-date">
+  <time datetime="2015-08-28T15:56:05.000Z" itemprop="datePublished">2015-08-28</time>
+</a>
+      
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在虚拟机中安装了一个Ubuntu，用samba访问资源是非常方便的，之前在我的树莓派2中也安装了samba。这里备注下。</p>
+<ol>
+<li>安装<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install samba</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>安装完成后samba的配置目录在/etc/samba下。<br><img src="/images/ubuntu-samba/1.png" alt=""></p>
+<ol>
+<li>添加用户<br>添加当前用户，需root权限。我的用户名是apache，所以我会这么写：<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo smbpasswd <span class="operator">-a</span> apache</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>设置密码，完成添加。<br><img src="/images/ubuntu-samba/2.png" alt=""></p>
+<ol>
+<li><p>为添加的用户书写配置<br>编辑/etc/samba/smb.conf，我在自己的虚拟机上使用，只需在smb.conf的末尾添加如下配置即可：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[apache]</span><br><span class="line">   comment = Apache<span class="string">'s Home</span><br><span class="line">   path = /home/apache</span><br><span class="line">   browseable = yes</span><br><span class="line">   read only = no</span><br><span class="line">   guest ok = no</span><br><span class="line">   create mask = 0600</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>重启samba，完成配置</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo /etc/init.d/samba restart</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p><img src="/images/ubuntu-samba/3.png" alt=""></p>
+<p>现在Windows下敲击Win+R，输入\ubuntu-ip\apache<br>可以愉快的从windows资源管理器访问ubuntu下apache用户主目录下的文件了：）</p>
+
+      
+    </div>
+  
+  </div>
+  
+</article>
+
+
+
+    
       <article id="post-use-butterknife-in-AS" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
