@@ -53,6 +53,44 @@
   </div>
 </header>
     <section id="main" class="outer">
+      <article id="post-python-logging" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/09/04/python-logging/">python的logging模块</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2015/09/04/python-logging/" class="article-date">
+  <time datetime="2015-09-04T14:41:08.000Z" itemprop="datePublished">2015-09-04</time>
+</a>
+      
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>这里不打算详细介绍logging模块的使用方法，因为该模块使用简单，而且网上也有比较多的介绍文章。<br>仅把个人使用Python写小东西时候的logging模块用法记录下来，以便日后copy</p>
+<h6 id="文件_log-py">文件 log.py</h6><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#-*- coding: utf-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> logging</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line">logger = logging.getLogger(<span class="string">""</span>)</span><br><span class="line">__formatter = logging.Formatter(<span class="string">"[%(levelname)-7s][%(asctime)s][%(filename)s:%(lineno)d] %(message)s"</span>, <span class="string">"%d %b %Y %H:%M:%S"</span>)</span><br><span class="line">__streamHandler = logging.StreamHandler(sys.stderr)</span><br><span class="line">__streamHandler.setFormatter(__formatter)</span><br><span class="line">__fileHandler = logging.FileHandler(<span class="string">"debug.log"</span>)</span><br><span class="line">__fileHandler.setFormatter(__formatter)</span><br><span class="line"></span><br><span class="line">logger.setLevel(logging.DEBUG)</span><br><span class="line">logger.addHandler(__streamHandler)</span><br><span class="line">logger.addHandler(__fileHandler)</span><br></pre></td></tr></table></figure>
+<h6 id="使用">使用</h6><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> log <span class="keyword">import</span> logger</span><br><span class="line">logger.debug(<span class="string">"this is a debug message"</span>)</span><br><span class="line">logger.warning(<span class="string">"this is a warning message"</span>)</span><br><span class="line">logger.error(<span class="string">"this is a error message"</span>)</span><br></pre></td></tr></table></figure>
+<h6 id="效果">效果</h6><p><img src="/images/python-logging/test.png" alt=""></p>
+
+      
+    </div>
+  
+  </div>
+  
+</article>
+
+
+
+    
       <article id="post-ubuntu-samba" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
