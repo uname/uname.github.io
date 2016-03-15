@@ -53,6 +53,48 @@
   </div>
 </header>
     <section id="main" class="outer">
+      <article id="post-pyqt4-popmenu" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/03/15/pyqt4-popmenu/">PyQt4中的右键弹出菜单</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2016/03/15/pyqt4-popmenu/" class="article-date">
+  <time datetime="2016-03-15T02:36:05.000Z" itemprop="datePublished">2016-03-15</time>
+</a>
+      
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>笔者在用PyQt4写GUI程序时，有时为了获得更好的交互体验，会给一些控件加右键弹出菜单。这里以一段代码为例，记录下给控件添加右键菜单的步骤。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#-*- coding: utf-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">from</span> PyQt4 <span class="keyword">import</span> QtGui</span><br><span class="line"><span class="keyword">from</span> PyQt4 <span class="keyword">import</span> QtCore</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestWidget</span><span class="params">(QtGui.QWidget)</span>:</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, parent=None)</span>:</span></span><br><span class="line">        QtGui.QWidget.__init__(self, parent)</span><br><span class="line">        </span><br><span class="line">        self.setGeometry (<span class="number">100</span>, <span class="number">100</span>, <span class="number">200</span>, <span class="number">120</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># STEP 0 create a widget</span></span><br><span class="line">        self.button = QtGui.QPushButton(<span class="string">"Test button"</span>, self)</span><br><span class="line">        <span class="comment"># STEP 1 setContextMenuPolicy</span></span><br><span class="line">        self.button.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)</span><br><span class="line">        <span class="comment"># STEP 2 connect signal</span></span><br><span class="line">        self.connect(self.button,</span><br><span class="line">                     QtCore.SIGNAL(<span class="string">"customContextMenuRequested(const QPoint&amp;)"</span>),</span><br><span class="line">                     self.onButtonPopMenu)</span><br><span class="line">        <span class="comment"># STEP 3 make a menu and add actions</span></span><br><span class="line">        self.buttonMenu = QtGui.QMenu(self)</span><br><span class="line">        action1 = QtGui.QAction(<span class="string">"Test Action"</span>, self,</span><br><span class="line">                                 priority=QtGui.QAction.LowPriority,</span><br><span class="line">                                 triggered=self.onAction1)</span><br><span class="line">        <span class="comment"># Add icon for menu action if you have icon resource(not necessary)</span></span><br><span class="line">        <span class="comment">#action1.setIcon(QtGui.QIcon(":/app/icons/app/copy.png"))</span></span><br><span class="line">        self.buttonMenu.addAction(action1)</span><br><span class="line">        <span class="comment"># you can create more actions and add them to self.buttonMenu</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">onButtonPopMenu</span><span class="params">(self, point)</span>:</span></span><br><span class="line">        self.buttonMenu.exec_(self.button.mapToGlobal(point))</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">onAction1</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">print</span> <span class="string">"Hello uname"</span></span><br><span class="line">        </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    app = QtGui.QApplication(sys.argv)</span><br><span class="line">    widget = TestWidget()</span><br><span class="line">    widget.show()</span><br><span class="line">    app.exec_()</span><br></pre></td></tr></table></figure></p>
+<p>以上代码运行效果如图：<br><img src="/images/pyqt4-popmenu/demo.gif" alt=""></p>
+
+      
+    </div>
+  
+    <footer class="article-footer">
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python-PyQt4/">Python PyQt4</a></li></ul>
+
+    </footer>
+  
+  </div>
+  
+</article>
+
+
+
+    
       <article id="post-python-getopt" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -466,59 +508,6 @@
     <footer class="article-footer">
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/小工具/">小工具</a></li></ul>
-
-    </footer>
-  
-  </div>
-  
-</article>
-
-
-
-    
-      <article id="post-pysockdebugger" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/11/19/pysockdebugger/">开源的TCP/UDP网络通信调试器</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      <a href="/2015/11/19/pysockdebugger/" class="article-date">
-  <time datetime="2015-11-19T14:32:20.000Z" itemprop="datePublished">2015-11-19</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/我的开源工具/">我的开源工具</a>
-  </div>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>笔者在参与的一些项目中，经常需要对使用TCP或UDP通信的协议进行调试。除针对业务协议写一些测试客户端或者脚本外，笔者也会借助网上的现有TCP/UDP调试工具做一些简单的连通和ECHO回包测试。<br>用过一些工具，总有些不顺手的地方，于是利用琐碎时间，自己用PyQt4做了一个叫<strong>PySockDebugger</strong>的小东西，<strong>已在Github开源</strong><a href="https://github.com/uname/PySockDebuger" target="_blank" rel="external">PySockDebuger</a>（Debugger误写为Debuger，不再修改）。<br>1.0Beta版本的windows版本已经通过Py2exe打包并上传到Github项目的<a href="https://github.com/uname/PySockDebuger/releases" target="_blank" rel="external">release</a>目录下。欢迎下载体验：）<br>因为使用Python实现，所以在Mac和Linux桌面环境下均可使用（需安装PyQt4，另外有个获取本地IP的小BUG，暂未修改，若使用时遇到，只需按照堆栈错误提示，简单修改下即可）。<br>主要有以下模式:</p>
-<ol>
-<li>TCP服务器</li>
-<li>TCP客户端</li>
-<li>UDP服务器(主动绑定本地端口)</li>
-<li>UDP客户端</li>
-</ol>
-<p>另外支持在同一个窗口内创建多个实例，不同的实例在Tab页中显示。下过如下图：<br><img src="/images/pysockdebugger/snapshot.png" alt=""></p>
-<p>除重复发送和UDP客户端模式下的绑定本地端口，这两个功能暂未实现外（代码好写，但暂未有时间），其他功能都测试可用。<br>后面打算做个插件功能，由用户实现发送和接收数据的pack和unpack过程，这样在调试不同的协议时，只需加载实现了pack和unpack功能的插件即可。而因为PySockDebuger使用Python实现，这样的插件实现起来还是很方便的。</p>
-
-      
-    </div>
-  
-    <footer class="article-footer">
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/网络与调试/">网络与调试</a></li></ul>
 
     </footer>
   
