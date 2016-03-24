@@ -53,6 +53,53 @@
   </div>
 </header>
     <section id="main" class="outer">
+      <article id="post-tiny-code" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/03/24/tiny-code/">微代码</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2016/03/24/tiny-code/" class="article-date">
+  <time datetime="2016-03-24T07:39:47.000Z" itemprop="datePublished">2016-03-24</time>
+</a>
+      
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h5 id="记录一些平时缩写或网上偶遇的代码段，以备不时之需。">记录一些平时缩写或网上偶遇的代码段，以备不时之需。</h5><blockquote>
+<p>Java</p>
+</blockquote>
+<ol>
+<li>单例模式的最佳写法<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">volatile</span> <span class="keyword">static</span> Singleton instance;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span> <span class="params">()</span> </span>&#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(instance == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">synchronized</span>(Singleton.class) &#123;</span><br><span class="line">                <span class="keyword">if</span>(instance == <span class="keyword">null</span>) &#123;</span><br><span class="line">                    instance = <span class="keyword">new</span> Singleton();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+
+      
+    </div>
+  
+    <footer class="article-footer">
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/code/">code</a></li></ul>
+
+    </footer>
+  
+  </div>
+  
+</article>
+
+
+
+    
       <article id="post-pyqt4-popmenu" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -464,50 +511,6 @@
     <footer class="article-footer">
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/代码笔记/">代码笔记</a></li></ul>
-
-    </footer>
-  
-  </div>
-  
-</article>
-
-
-
-    
-      <article id="post-minimd5" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/11/26/minimd5/">minimd5</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      <a href="/2015/11/26/minimd5/" class="article-date">
-  <time datetime="2015-11-26T07:28:04.000Z" itemprop="datePublished">2015-11-26</time>
-</a>
-      
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>在kindle电子书的源码中，util-linux_2.12r\lib目录下有md5.c和md5.h两个文件。md5.c实现了计算md5值的算法，且没有外部依赖。md5.h内有一行<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">#<span class="keyword">include</span> "../defines.h"</span></span><br></pre></td></tr></table></figure></p>
-<p>实际上并不需要defines.h，注视掉即可。利用这两个文件，我们可以实现一个很小的md5计算器，我把它叫做minimd5。源码也灰常简单。已经放在Github上<strong><a href="https://github.com/uname/minimd5" target="_blank" rel="external">minimd5</a></strong></p>
-<p>效果如图：</p>
-<p><img src="/images/minimd5/snapshort.png" alt=""></p>
-
-      
-    </div>
-  
-    <footer class="article-footer">
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/小工具/">小工具</a></li></ul>
 
     </footer>
   
