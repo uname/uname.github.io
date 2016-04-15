@@ -53,6 +53,63 @@
   </div>
 </header>
     <section id="main" class="outer">
+      <article id="post-use-swig-to-create-python-module" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/12/14/use-swig-to-create-python-module/">使用swig创建Python模块</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2015/12/14/use-swig-to-create-python-module/" class="article-date">
+  <time datetime="2015-12-14T08:50:40.000Z" itemprop="datePublished">2015-12-14</time>
+</a>
+      
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>做Python开发，有时出于性能考虑或需要调用已有C/C++实现的东西时，我们就要使用Python的ctypes模块提供的CDLL方法或者自己编写扩展模块。<br>ctypes的CDLL方法对不含有C++类的dll或者so的访问还是比较方便靠谱的，但是对C++类方法的访问似乎不太好用。这时我们就需要自己编写扩展模块了。</p>
+<p>编写扩展模块可以使用Python提供的API从0开始实现（比较累），也可以借助boost、swig或者sip等工具库来实现。知名度很高的PyQt4（Qt4的Python绑定）就是使用sip来完成的。<br>这里笔者以上一篇文章介绍的<a href="http://uname.github.io/2015/11/26/minimd5/" target="_blank" rel="external">minimd5</a>项目为例，记录使用swig创建Python扩展模块的方法，以便日后翻查。<br>以下步骤中所述源码，可在笔者上传到github上的<a href="https://github.com/uname/minimd5" target="_blank" rel="external">minimd5</a>项目中找到</p>
+<ol>
+<li><p>首先安装swig和python开发环境，笔者在ubuntu下使用如下命令完成</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install swig python-dev</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>编写pyminimd5.c，实现函数: char <em>md5sum(const char </em>const file);<br><img src="/images/use-swig-to-create-python-module/pyminimd5.c.png" alt=""></p>
+</li>
+<li><p>编写pyminimd5.i，该文件由swig加载生成pyminimd5_wrap.cxx文件，具体方法看下一步中的Makefile代码片段</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">%module minimd5</span><br><span class="line">%&#123;</span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">char</span> *md5sum(<span class="keyword">const</span> <span class="keyword">char</span> *<span class="keyword">const</span> file);</span><br><span class="line">%&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">char</span> *md5sum(<span class="keyword">const</span> <span class="keyword">char</span> *<span class="keyword">const</span> file);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修改minimd5的Makfile，增加用于编译_minimd5.so的代码</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">pyminimd5: $(PYMODULE_SOURCES)</span><br><span class="line">    swig -python -c++ pyminimd5.i</span><br><span class="line">    g++ -c pyminimd5.c pyminimd5_wrap.cxx md5.c -I/usr/include/python2.7/ -fPIC</span><br><span class="line">    g++ -shared pyminimd5.o pyminimd5_wrap.o md5.o -o $(PYMODULE_SO)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>make pyminimd5生成_minimd5.so，使用Python加载并测试<br><img src="/images/use-swig-to-create-python-module/test.png" alt=""></p>
+</li>
+</ol>
+
+      
+    </div>
+  
+    <footer class="article-footer">
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/代码笔记/">代码笔记</a></li></ul>
+
+    </footer>
+  
+  </div>
+  
+</article>
+
+
+
+    
       <article id="post-minimd5" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -479,59 +536,8 @@
 
 
     
-      <article id="post-arduloader" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/07/15/arduloader/">Arduloader</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      <a href="/2015/07/15/arduloader/" class="article-date">
-  <time datetime="2015-07-15T07:13:36.000Z" itemprop="datePublished">2015-07-15</time>
-</a>
-      
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Arduloader 用于烧写HEX文件到Arduino开发板。<br>该工具使用Python语言开发，界面由PyQt4实现，烧写功能由三方工具avrdude完成。<br>可将Arduloader理解为avrdude命令行工具的UI外壳，以方便日常使用。<br>因为由Python开发，该工具是跨平台的。笔者已将该工具开源在Github，欢迎感兴趣的Arduino爱好者下载使用。</p>
-<p><em><a href="https://github.com/uname/Arduloader" target="_blank" rel="external">Arduloader的Github开源地址</a></em><br><a href="https://github.com/uname/Arduloader/releases/download/V1.0Beta/WinRelease_V1.0Beta.zip" target="_blank" rel="external">下载Windows发布版V1.0Beta</a></p>
-<ul>
-<li>Windows平台上如何生成Arduloader.exe</li>
-</ul>
-<ol>
-<li><p>确认你已经安装了Python和对应版本的PyQt4、py2exe。<br>在Python交互模式下执行如下测试，若没有报错，则环境OK。<br><img src="/images/arduloader/deplibs.png" alt=""></p>
-</li>
-<li><p>下载源码，在DOS命令行窗口中进入源码根目录，执行buildexe.py py2exe<br><img src="/images/arduloader/buildexe.png" alt=""></p>
-</li>
-<li><p>执行OK后，会在当前目录生成build和dist目录，其中build目录可删除，dist下的main.exe即为Arduloader的EXE版本。<br>将源码根目录下的avrtool目录和boards.txt拷贝到dist目录下，即可使用。<br><img src="/images/arduloader/winversion.png" alt=""></p>
-</li>
-</ol>
-<hr>
-<ul>
-<li>效果截图<br><img src="/images/arduloader/snapshot.png" alt=""></li>
-</ul>
-
-      
-    </div>
-  
-  </div>
-  
-</article>
-
-
-
-    
       <nav id="page-nav">
-        <a class="extend prev" rel="prev" href="/">&laquo; 上一页</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+        <a class="extend prev" rel="prev" href="/">&laquo; 上一页</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/">下一页 &raquo;</a>
       </nav>
     </section>
     <footer id="footer">

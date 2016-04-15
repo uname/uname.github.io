@@ -53,6 +53,55 @@
   </div>
 </header>
     <section id="main" class="outer">
+      <article id="post-socks5-tcp-connect" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/04/15/socks5-tcp-connect/">SOCKS5代理TCP CONNECT实验</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2016/04/15/socks5-tcp-connect/" class="article-date">
+  <time datetime="2016-04-15T06:37:41.000Z" itemprop="datePublished">2016-04-15</time>
+</a>
+      
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h6 id="背景知识">背景知识</h6><p><a href="https://www.ietf.org/rfc/rfc1928.txt" target="_blank" rel="external">RFC1928</a><br><a href="https://zh.wikipedia.org/wiki/SOCKS" target="_blank" rel="external">WiKi</a></p>
+<h6 id="实验目的">实验目的</h6><p>了解使用Socks代理进行TCP连接的过程。</p>
+<h6 id="实验环境">实验环境</h6><p>ubuntu</p>
+<h6 id="实验步骤">实验步骤</h6><ol>
+<li><p>安装sSocks(Socks5 Sevrer)<br>wget <a href="http://pilotfiber.dl.sourceforge.net/project/ssocks/ssocks-0.0.14.tar.gz" target="_blank" rel="external">http://pilotfiber.dl.sourceforge.net/project/ssocks/ssocks-0.0.14.tar.gz</a><br>tar zxvf ssocks-0.0.14.tar.gz<br>cd ssocks-0.0.14<br>./configure<br>make</p>
+</li>
+<li><p>安装nmap（我们用该软件包中的ncat创建一个TCP的echo server，作为要用代理连接的目标服务）<br>sudo apt-get install nmap<br>安装完成后使用命令:<br>ncat -l 8082 —keep-open —exec “/bin/cat”<br>测试echo server是否OK<br><img src="/images/socks5-tcp-connect/socks5-1.png" width="80%"></p>
+</li>
+<li><p>启动sSocks server（无认证模式）和echo server<br>客户机连接到服务器，先发送一个版本标识/方法选择报文:<br><img src="/images/socks5-tcp-connect/socks5-2.png"><br>VER: X’05’ SOCKS协议版本号<br>NMETHODS: METHODS的个数，我们使用X’01’<br>METHOD:<br>当前被定义的的值有：<br>　　&gt;&gt; X’00’ 无验证需求<br>　　&gt;&gt; X’01’ 通用安全服务应用程序接口(GSSAPI)<br>　　&gt;&gt; X’02’ 用户名/密码(USERNAME/PASSWORD)<br>　　&gt;&gt; X’03’ 至 X’7F’ IANA 分配(IANA ASSIGNED)<br>　　&gt;&gt; X’80’ 至 X’FE’ 私人方法保留(RESERVED FOR PRIVATE METHODS)<br>　　&gt;&gt; X’FF’ 无可接受方法(NO ACCEPTABLE METHODS)<br>这里我们使用X’00’<br>我们发送十六进制数据: 05 01 00<br>Socks5服务器应答报文：<br><img src="/images/socks5-tcp-connect/socks5-3.png"><br>因为我们使用了无认证模式，因此正确情况下服务器应答：05 00<br><img src="/images/socks5-tcp-connect/socks5-4.png" width="80%"></p>
+</li>
+<li><p>客户机发送代理需求报文<br>报文格式：<br><img src="/images/socks5-tcp-connect/socks5-5.png"><br>其中：<br>VER protocol version：X’05’<br>CMD<br>　CONNECT X’01’<br>　BIND X’02’<br>　UDP ASSOCIATE X’03’<br>RSV RESERVED<br>ATYP address type of following address<br>　IP V4 address: X’01’<br>　DOMAINNAME: X’03’<br>　IP V6 address: X’04’<br>DST.ADDR desired destination address<br>DST.PORT desired destination port in network octet order</p>
+</li>
+</ol>
+<p>本次实验，我们测试TCP CONNECT命令，请求代理服务器连接到我们使用ncat启动的TCO echo server。<br>发送十六进制数据：05 01 00 01 73 9f 9d 7e 1f 92<br>正常情况下，我们会收到服务器的应答报文，格式如下：<br><img src="/images/socks5-tcp-connect/socks5-6.png"><br>其中：<br>VER protocol version: X’05’<br>REP Reply field:<br>　　X’00’ succeeded<br>　　X’01’ general SOCKS server failure<br>　　X’02’ connection not allowed by ruleset<br>　　X’03’ Network unreachable<br>　　X’04’ Host unreachable<br>　　X’05’ Connection refused<br>　　X’06’ TTL expired<br>　　X’07’ Command not supported<br>　　X’08’ Address type not supported<br>　　X’09’ to X’FF’ unassigned<br>RSV RESERVED<br>ATYP address type of following address<br>　　IP V4 address: X’01’<br>　　DOMAINNAME: X’03’<br>　　IP V6 address: X’04’<br>BND.ADDR server bound address<br>BND.PORT server bound port in network octet order<br>标志RESERVED(RSV)的地方必须设置为X’00’。</p>
+<p>代理完成后，就可以发送一些数据测试下，是否能收到echo server的响应了：<br><img src="/images/socks5-tcp-connect/socks5-7.png"></p>
+
+      
+    </div>
+  
+  </div>
+  
+</article>
+
+
+
+    
       <article id="post-tiny-code" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -464,65 +513,8 @@
 
 
     
-      <article id="post-use-swig-to-create-python-module" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/12/14/use-swig-to-create-python-module/">使用swig创建Python模块</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      <a href="/2015/12/14/use-swig-to-create-python-module/" class="article-date">
-  <time datetime="2015-12-14T08:50:40.000Z" itemprop="datePublished">2015-12-14</time>
-</a>
-      
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>做Python开发，有时出于性能考虑或需要调用已有C/C++实现的东西时，我们就要使用Python的ctypes模块提供的CDLL方法或者自己编写扩展模块。<br>ctypes的CDLL方法对不含有C++类的dll或者so的访问还是比较方便靠谱的，但是对C++类方法的访问似乎不太好用。这时我们就需要自己编写扩展模块了。</p>
-<p>编写扩展模块可以使用Python提供的API从0开始实现（比较累），也可以借助boost、swig或者sip等工具库来实现。知名度很高的PyQt4（Qt4的Python绑定）就是使用sip来完成的。<br>这里笔者以上一篇文章介绍的<a href="http://uname.github.io/2015/11/26/minimd5/" target="_blank" rel="external">minimd5</a>项目为例，记录使用swig创建Python扩展模块的方法，以便日后翻查。<br>以下步骤中所述源码，可在笔者上传到github上的<a href="https://github.com/uname/minimd5" target="_blank" rel="external">minimd5</a>项目中找到</p>
-<ol>
-<li><p>首先安装swig和python开发环境，笔者在ubuntu下使用如下命令完成</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install swig python-dev</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>编写pyminimd5.c，实现函数: char <em>md5sum(const char </em>const file);<br><img src="/images/use-swig-to-create-python-module/pyminimd5.c.png" alt=""></p>
-</li>
-<li><p>编写pyminimd5.i，该文件由swig加载生成pyminimd5_wrap.cxx文件，具体方法看下一步中的Makefile代码片段</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">%module minimd5</span><br><span class="line">%&#123;</span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">char</span> *md5sum(<span class="keyword">const</span> <span class="keyword">char</span> *<span class="keyword">const</span> file);</span><br><span class="line">%&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">char</span> *md5sum(<span class="keyword">const</span> <span class="keyword">char</span> *<span class="keyword">const</span> file);</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>修改minimd5的Makfile，增加用于编译_minimd5.so的代码</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">pyminimd5: $(PYMODULE_SOURCES)</span><br><span class="line">    swig -python -c++ pyminimd5.i</span><br><span class="line">    g++ -c pyminimd5.c pyminimd5_wrap.cxx md5.c -I/usr/include/python2.7/ -fPIC</span><br><span class="line">    g++ -shared pyminimd5.o pyminimd5_wrap.o md5.o -o $(PYMODULE_SO)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>make pyminimd5生成_minimd5.so，使用Python加载并测试<br><img src="/images/use-swig-to-create-python-module/test.png" alt=""></p>
-</li>
-</ol>
-
-      
-    </div>
-  
-    <footer class="article-footer">
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/代码笔记/">代码笔记</a></li></ul>
-
-    </footer>
-  
-  </div>
-  
-</article>
-
-
-
-    
       <nav id="page-nav">
-        <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">下一页 &raquo;</a>
+        <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">下一页 &raquo;</a>
       </nav>
     </section>
     <footer id="footer">

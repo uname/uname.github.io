@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Uname&#39;s blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Uname's blog">
+<meta property="og:url" content="http://yoursite.com/page/3/index.html">
+<meta property="og:site_name" content="Uname's blog">
+<meta property="og:description">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Uname's blog">
+<meta name="twitter:description">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="/webfonts/ptserif/main.css" rel='stylesheet' type='text/css'>
+  <link href="/webfonts/source-code-pro/main.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  
+
+</head>
+<body>
+  <div id="container">
+    <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-inner" class="inner">
+      <a id="main-nav-toggle" class="nav-icon"></a>
+      <a id="logo" class="logo logo-text" href="/">uname&#39;s blog</a>
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/categories">Categories</a>
+        
+          <a class="main-nav-link" href="/tags">Tags</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        <div id="search-form-wrap">
+          <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+    <section id="main" class="outer">
+      <article id="post-arduloader" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/07/15/arduloader/">Arduloader</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/2015/07/15/arduloader/" class="article-date">
+  <time datetime="2015-07-15T07:13:36.000Z" itemprop="datePublished">2015-07-15</time>
+</a>
+      
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Arduloader 用于烧写HEX文件到Arduino开发板。<br>该工具使用Python语言开发，界面由PyQt4实现，烧写功能由三方工具avrdude完成。<br>可将Arduloader理解为avrdude命令行工具的UI外壳，以方便日常使用。<br>因为由Python开发，该工具是跨平台的。笔者已将该工具开源在Github，欢迎感兴趣的Arduino爱好者下载使用。</p>
+<p><em><a href="https://github.com/uname/Arduloader" target="_blank" rel="external">Arduloader的Github开源地址</a></em><br><a href="https://github.com/uname/Arduloader/releases/download/V1.0Beta/WinRelease_V1.0Beta.zip" target="_blank" rel="external">下载Windows发布版V1.0Beta</a></p>
+<ul>
+<li>Windows平台上如何生成Arduloader.exe</li>
+</ul>
+<ol>
+<li><p>确认你已经安装了Python和对应版本的PyQt4、py2exe。<br>在Python交互模式下执行如下测试，若没有报错，则环境OK。<br><img src="/images/arduloader/deplibs.png" alt=""></p>
+</li>
+<li><p>下载源码，在DOS命令行窗口中进入源码根目录，执行buildexe.py py2exe<br><img src="/images/arduloader/buildexe.png" alt=""></p>
+</li>
+<li><p>执行OK后，会在当前目录生成build和dist目录，其中build目录可删除，dist下的main.exe即为Arduloader的EXE版本。<br>将源码根目录下的avrtool目录和boards.txt拷贝到dist目录下，即可使用。<br><img src="/images/arduloader/winversion.png" alt=""></p>
+</li>
+</ol>
+<hr>
+<ul>
+<li>效果截图<br><img src="/images/arduloader/snapshot.png" alt=""></li>
+</ul>
+
+      
+    </div>
+  
+  </div>
+  
+</article>
+
+
+
+    
+      <nav id="page-nav">
+        <a class="extend prev" rel="prev" href="/page/2/">&laquo; 上一页</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span>
+      </nav>
+    </section>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 HeQingwei&nbsp;
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>, theme by <a href="http://github.com/ppoffice">PPOffice</a>
+    </div>
+  </div>
+</footer>
+    
+
+<script src="/js/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+
+  </div>
+</body>
+</html>
